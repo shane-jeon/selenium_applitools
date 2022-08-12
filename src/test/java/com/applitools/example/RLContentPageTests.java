@@ -105,7 +105,6 @@ public class ContentPageTests {
 //        System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
         driver = new ChromeDriver(new ChromeOptions().setHeadless(headless));
 
-
         // Set an implicit wait of 10 seconds.
         // For larger projects, use explicit waits for better control.
         // https://www.selenium.dev/documentation/webdriver/waits/
@@ -125,9 +124,7 @@ public class ContentPageTests {
                 driver,                                         // WebDriver object to "watch"
                 "Static Content Page",                          // The name of the app under test
                 testInfo.getDisplayName());                     // The name of the test case
-                new RectangleSize(1024, 768);      // The viewport size for the local browser
-
-
+//                new RectangleSize(1024, 768);                 // The viewport size for the local browser
     }
 
     @Test
