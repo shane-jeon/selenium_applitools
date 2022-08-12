@@ -1,4 +1,4 @@
-# Applitools Sample Test - Rocket Lawyer Content Page
+# Applitools Sample Test - Static Content Pages
 
 This project is to demonstrate the capabilities of Applitools Eyes, a visual AI automation test platform, that catches differences in static content pages not visible to the naked human eye.
 Changes detected can be attributed to feature changes or bugs. Applitools Eyes has been integrated with a Selenium automated test script that 
