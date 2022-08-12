@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class RLContentPageTests {
+public class ContentPageTests {
     // This JUnit test case class contains everything needed to run a full visual test against the ACME bank site.
     // It runs the test once locally,
     // and then it performs cross-browser testing against multiple unique browsers in Applitools Ultrafast Grid.
@@ -43,18 +43,18 @@ public class RLContentPageTests {
     public static void setUpConfigAndRunner() {
         // This method sets up the configuration for running visual tests in the Ultrafast Grid.
         // The configuration is shared by all tests in a test suite, so it belongs in a `BeforeAll` method.
-        // If you have more than one test class, then you should abstract this configuration to avoid duplication.
 
         // Read the Applitools API key from an environment variable.
-        // To find your Applitools API key:
-        // https://applitools.com/tutorials/getting-started/setting-up-your-environment.html
-        applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
-//        applitoolsApiKey="ckUtDnJO0A2eOkcjxIasR3104fN5x0eBJKsyQXHRX106xZQ110";
+//        applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
+        // If environment variable isn't working, hardcode your API-key below and comment out line above
+        applitoolsApiKey="<API-Key>";
+
 
         // Read the headless mode setting from an environment variable.
         // Use headless mode for Continuous Integration (CI) execution.
         // Use headed mode for local development.
         headless = Boolean.parseBoolean(System.getenv().getOrDefault("HEADLESS", "true"));
+
 
         // Create the runner for the Ultrafast Grid.
         // Concurrency refers to the number of visual checkpoints Applitools will perform in parallel.
@@ -64,7 +64,7 @@ public class RLContentPageTests {
         // Create a new batch for tests.
         // A batch is the collection of visual checkpoints for a test suite.
         // Batches are displayed in the dashboard, so use meaningful names.
-        batch = new BatchInfo("RL Applitools: Shortened CSV");
+        batch = new BatchInfo("Applitools Pilot");
 
         // Create a configuration for Applitools Eyes.
         config = new Configuration();
@@ -80,17 +80,19 @@ public class RLContentPageTests {
         // Add 3 desktop browsers with different viewports for cross-browser testing in the Ultrafast Grid.
         // Other browsers are also available, like Edge and IE.
 //        config.addBrowser(800, 600, BrowserType.CHROME);
-        config.addBrowser(1600, 1200, BrowserType.CHROME);
-        config.addBrowser(1366, 784, BrowserType.FIREFOX);
+        config.addBrowser(1366, 768, BrowserType.CHROME);
+        config.addBrowser(1600, 1200, BrowserType.EDGE_CHROMIUM);
         config.addBrowser(1024, 768, BrowserType.SAFARI);
 
-        // Add 2 mobile emulation devices with different orientations for cross-browser testing in the Ultrafast Grid.
-        // Other mobile devices are available, including iOS.
-        config.addDeviceEmulation(DeviceName.Nexus_10, ScreenOrientation.LANDSCAPE);
-//        Line 91 solves issue in which Device iPhone_11, ScreenOrientation Portrait is no longer cut off
+        // Add 2 mobile emulation devices with different orientations for cross-browser testing in the Ultrafast Grid
+        // Other mobile devices are available
+        // .setLayoutBreakpoints resolves issue in which Portrait ScreenOrientation screenshots cuts off portions of the page
         config.setLayoutBreakpoints(414, 896);
+        config.addDeviceEmulation(DeviceName.Nexus_10, ScreenOrientation.LANDSCAPE);
         config.addDeviceEmulation(DeviceName.iPhone_11, ScreenOrientation.PORTRAIT);
-
+        // Tablet emulation device (CEO's preferred method of viewing content)
+//        config.addDeviceEmulation(DeviceName.iPad_Pro, ScreenOrientation.PORTRAIT);
+//        config.addDeviceEmulation(DeviceName.iPad_Pro, ScreenOrientation.LANDSCAPE);
     }
 
     @BeforeEach
@@ -100,8 +102,7 @@ public class RLContentPageTests {
         // Open the browser with the ChromeDriver instance.
         // Even though this test will run visual checkpoints on different browsers in the Ultrafast Grid,
         // it still needs to run the test one time locally to capture snapshots.
-        System.setProperty("webdriver.chrome.driver", "/Users/jjun/Documents/IDEAprojects/chromedriver");
-//        System.setProperty("webdriver.chrome.driver", "INSERT CHROME DRIVER PATH");
+//        System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
         driver = new ChromeDriver(new ChromeOptions().setHeadless(headless));
 
 
@@ -109,7 +110,7 @@ public class RLContentPageTests {
         // For larger projects, use explicit waits for better control.
         // https://www.selenium.dev/documentation/webdriver/waits/
         // The following call works for Selenium 4:
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         // If you are using Selenium 3, use the following call instead:
         // driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -122,13 +123,12 @@ public class RLContentPageTests {
         // It is a recommended practice to set all four inputs:
         eyes.open(
                 driver,                                         // WebDriver object to "watch"
-                "Rocket Lawyer Home Page",                            // The name of the app under test
+                "Static Content Page",                          // The name of the app under test
                 testInfo.getDisplayName());                     // The name of the test case
-//                new RectangleSize(1024, 768);    // The viewport size for the local browser
+                new RectangleSize(1024, 768);      // The viewport size for the local browser
 
 
     }
-
 
     @Test
     public void goToContentPage() {
@@ -138,28 +138,24 @@ public class RLContentPageTests {
         // If the page ever changes, then Applitools will detect the changes and highlight them in the dashboard.
         // Traditional assertions that scrape the page for text values are not needed here.
 
+        // Feeds iteration of all URLs in CSV file to Applitools for eyes.check to take screenshots of static content page
         CSVReader content = new CSVReader();
-        List<ArrayList<String>> pages = CSVReader.getContentPages("/Users/jjun/Documents/csv_files/affiliates_shortened.csv");
+        List<ArrayList<String>> pages = CSVReader.getContentPages("<insert csv file path>");
 
         ListIterator<ArrayList<String>> pagesIterator = pages.listIterator();
 
         while (pagesIterator.hasNext()) {
             ArrayList<String> page = pagesIterator.next();
-//
+
+            // Simple test, checks if current title matches actual title
             System.out.println("line: " + page);
             String baseURL = page.get(0);
-            String expectedURL = driver.getCurrentUrl();
+//            String expectedURL = driver.getCurrentUrl();
             String actualTitle = page.get(1);
             String expectedTitle = driver.getTitle();
 
-            // Load the login page.
+            // Load the static content page
             driver.get(baseURL);
-            eyes.check(Target.window().fully().withName("Rocket Lawyer"));
-//            eyes.checkWindow(10, "something");
-
-//            if (expectedTitle.contains(actualTitle)) {
-//                break;
-//            };
 
             if (expectedTitle.contains(actualTitle)) {
                 System.out.println("PASS: Expected title matches actual title");
@@ -169,14 +165,12 @@ public class RLContentPageTests {
                 System.out.println("");
             }
 
-            // Verify the full login page loaded correctly.
-//            eyes.check(Target.window().fully().withName("Rocket Lawyer"));
-            eyes.check(Target.window().fully().withName("Rocket Lawyer").layout());
-//            eyes.check(Target.window().layoutBreakpoints(true));
-//            eyes.check(Target.window().layoutBreakpoints(414, 896));
+            // Takes static content page screenshot, with default match level 'Static'
+            eyes.check(Target.window().fully().withName("Static Content Page"));
+
+            // Takes static content page screenshot, with match level 'layout'. Looks for changes in web layout only.
+//            eyes.check(Target.window().fully().withName("Static Content Page").layout());
         }
-//        eyes.check(Target.window().fully().withName("Rocket Lawyer"));
-//        eyes.check(Target.window().fully().withName("Rocket Lawyer").layout());
     }
 
     @AfterEach
