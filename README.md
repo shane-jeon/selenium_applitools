@@ -1,4 +1,4 @@
-# Applitools Sample Test - Static Content Page
+# Applitools Sample Test - Rocket Lawyer Content Page
 
 This project is to demonstrate the capabilities of Applitools Eyes, a visual AI automation test platform, that catches differences in static content pages not visible to the naked human eye.
 Changes detected can be attributed to feature changes or bugs. Applitools Eyes has been integrated with a Selenium automated test script that 
@@ -15,6 +15,7 @@ runs through all base URLs found in a content page CSV file and determines wheth
   * [Part 1: API Key](#apikey)
   * [Part 2: File Path](#filePath)
   * [Part 3: Run Selenium Test](#selenium)
+  * [Further customization](#customization)
 * [Troubleshooting](#troubleshooting)
 * [Why Use Applitools?](#whyUseApplitools)
 
@@ -30,10 +31,11 @@ runs through all base URLs found in a content page CSV file and determines wheth
 - Applitools API Key [How to find your API Key](https://applitools.com/tutorials/getting-started/setting-up-your-environment.html)
 
 ### <a name="gettingStarted"></a>Getting Started
+ *Disclosure: line references may change, but as of 8/12/2022 updates have been made according to changes made to script*
 #### <a name="chromeDriver"></a> Part 1: Set up ChromeDriver
-- Download and open the ChromeDriver zip file. Copy the file path onto line 100 in place of "*INSERT CHROME DRIVER PATH*"
+- Download and open the ChromeDriver zip file. Copy the file path onto line 106 in place of "*<INSERT CHROME DRIVER PATH>*"
 ```
-System.setProperty("webdriver.chrome.driver", "INSERT CHROME DRIVER PATH");
+System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
 ```
 
 #### <a name="apikey"></a>Part 2: Export (OR Hard Code) API Key
@@ -45,14 +47,18 @@ System.setProperty("webdriver.chrome.driver", "INSERT CHROME DRIVER PATH");
   - Verify env variable has been exported by entering ```printenv``` into Terminal. This command should return a list of environmental variables including ```"APPLITOOLS_API_KEY"```
 - **Option 2: Hard code API Key** (Avoid hard coding unless test keeps returning with ```java.langIllegalArgumentException: 'apiNull'```)
 
-  - Comment out line 50 (``` applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");```) and hard code API Key instead with ```applitoolsApiKey="<your_api_key>";``` on line 51. (*I have found that it may take a day or two for system to recognize environmental variable.)
+  - Comment out line 48 (``` applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");```) and hard code API Key instead with ```applitoolsApiKey="<your_api_key>";``` on line 50. (*I have found that it may take a day or two for system to recognize environmental variable.)
 
 #### <a name="filePath"></a>Part 3: File Path
-- Line 97 contains the path to the sample CSV file. If path should not work, download CSV file and enter local path
+- Line 143 contains the path to the sample CSV file. If path should not work, download CSV file and enter local path
 ```
 List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PATH");
 ```
 - Selenium test currently hard coded to retrieve CSV file index [0] (Content Page base URL) and [2] (Content Page Actual Title).
+
+#### <a name="customization"></a> Further Customization
+- To change test batch name, edit parameter within line 67
+- Option to change configuration of browser and/or device between lines 80 and 96
 
 ### <a name="runningTests"></a>Running Test
 - Run```RLContentPageTests.java```
@@ -106,4 +112,3 @@ List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PAT
 
 ## Authors
 - Shane Jun - **Initial work** - jjun-rl
-
