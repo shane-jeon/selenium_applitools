@@ -111,4 +111,4 @@ List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PAT
 
 
 ## Authors
-- Shane Jun - **Initial work** - jjun-rl
+- Shane Jun - **Initial work** - shane-jeon
