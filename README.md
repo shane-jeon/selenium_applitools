@@ -33,7 +33,7 @@ runs through all base URLs found in a content page CSV file and determines wheth
 ### <a name="gettingStarted"></a>Getting Started
  *Disclosure: line references may change, but as of 8/12/2022 updates have been made according to changes made to script*
 #### <a name="chromeDriver"></a> Part 1: Set up ChromeDriver
-- Download and open the ChromeDriver zip file. Copy the file path onto line 106 in place of "*<INSERT CHROME DRIVER PATH>*"
+- Download and open the ChromeDriver zip file. Copy the file path onto line 105 in place of "*<INSERT CHROME DRIVER PATH>*"
 ```
 System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
 ```
@@ -47,18 +47,18 @@ System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
   - Verify env variable has been exported by entering ```printenv``` into Terminal. This command should return a list of environmental variables including ```"APPLITOOLS_API_KEY"```
 - **Option 2: Hard code API Key** (Avoid hard coding unless test keeps returning with ```java.langIllegalArgumentException: 'apiNull'```)
 
-  - Comment out line 48 (``` applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");```) and hard code API Key instead with ```applitoolsApiKey="<your_api_key>";``` on line 50. (*I have found that it may take a day or two for system to recognize environmental variable.)
+  - Comment out line 48 (``` applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");```) and hard code API Key instead with ```applitoolsApiKey="<your_api_key>";``` on line 50. (*I personally found it took some time for the environment variable to be processed, hard coded API for easier access)
 
 #### <a name="filePath"></a>Part 3: File Path
-- Line 143 contains the path to the sample CSV file. If path should not work, download CSV file and enter local path
+- Line 140 contains the path to the sample CSV file. If path should not work, download CSV file and enter local path
 ```
 List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PATH");
 ```
 - Selenium test currently hard coded to retrieve CSV file index [0] (Content Page base URL) and [2] (Content Page Actual Title).
 
 #### <a name="customization"></a> Further Customization
-- To change test batch name, edit parameter within line 67
-- Option to change configuration of browser and/or device between lines 80 and 96
+- To change test batch name, edit parameter within line 67 ```config.setApiKey(applitoolsApiKey);```
+- Option to change configuration of browser and/or device anywhere after line 82 but before 96
 
 ### <a name="runningTests"></a>Running Test
 - Run```RLContentPageTests.java```
@@ -91,7 +91,7 @@ List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PAT
 
 **Limitations**
   - Free trial account is limited to 100 checkpoints (AKA 100 page checks). 
-  - As Applitools Eyes will run test on 3 different browsers and 2 types of devices, the number of lines in the CSV file will be run 5x.
+  - As Applitools Eyes will run test on 3 different browsers and 2 types of devices, the number of rows in the CSV file will be run 5x.
     - To circumvent multiple checkpoints, comment out any of the following located towards the end of ```@BeforeAll```. Just ensure at least one is left, otherwise test will not run.
     ```
     config.addBrowser(1600, 1200, BrowserType.CHROME);
@@ -100,7 +100,7 @@ List<ArrayList<String>> pages = CSVReader.getContentPages("INSERT_LOCAL_FILE_PAT
     config.addDeviceEmulation(DeviceName.Nexus_10, ScreenOrientation.LANDSCAPE);
     config.addDeviceEmulation(DeviceName.iPhone_11, ScreenOrientation.PORTRAIT);
     ```
-    - Edited CSV file to cut all but 3 lines from file, to prolong trial account use. 
+    - Edited CSV file to cut all but 3 rows from file, to prolong trial account use. 
     - After 100 checkpoints have been passed, no more tests can be run, however results still available for view.
 
 ## Built With
