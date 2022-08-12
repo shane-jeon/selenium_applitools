@@ -45,9 +45,9 @@ public class ContentPageTests {
         // The configuration is shared by all tests in a test suite, so it belongs in a `BeforeAll` method.
 
         // Read the Applitools API key from an environment variable.
-//        applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
+        applitoolsApiKey = System.getenv("APPLITOOLS_API_KEY");
         // If environment variable isn't working, hardcode your API-key below and comment out line above
-        applitoolsApiKey="<API-Key>";
+//        applitoolsApiKey="<API-Key>";
 
 
         // Read the headless mode setting from an environment variable.
@@ -102,7 +102,7 @@ public class ContentPageTests {
         // Open the browser with the ChromeDriver instance.
         // Even though this test will run visual checkpoints on different browsers in the Ultrafast Grid,
         // it still needs to run the test one time locally to capture snapshots.
-//        System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
+        System.setProperty("webdriver.chrome.driver", "<INSERT CHROME DRIVER PATH>");
         driver = new ChromeDriver(new ChromeOptions().setHeadless(headless));
 
         // Set an implicit wait of 10 seconds.
