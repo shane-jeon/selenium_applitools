@@ -1,9 +1,8 @@
 # Applitools Sample Test - Static Content Pages
 
-This project is to demonstrate the capabilities of Applitools Eyes, a visual AI automation test platform, that catches differences in static content pages not visible to the naked human eye.
-Changes detected can be attributed to feature changes or bugs. Applitools Eyes has been integrated with a Selenium automated test script that 
-runs through all base URLs found in a content page CSV file and determines whether or not a content page's "Actual Title" 
-(found in CSV file) matches that of the Expected Title returned from browser when test is run. 
+This project is to demonstrate the capabilities of Applitools Eyes, a visual AI automation test platform, that periodically catches differences in static content pages not visible to the naked human eye. The changes detected may be attributed to feature changes or bugs, such changes will be highlighted in pink on the Applitools dashboard.
+
+Applitools Eyes has been integrated with a Selenium automated test script that iterates through all rows, of which contain a base URL and a static content page's **Actual Title**, within a CSV file. The test determines if the *expected* title returned from the browser matches the *actual* title declared in the CSV file. This simple test merely serves as a conduit, to feed Applitools the static content pages to screenshot and compare.
 
 
 ## Table of Contents
@@ -32,6 +31,7 @@ runs through all base URLs found in a content page CSV file and determines wheth
 
 ### <a name="gettingStarted"></a>Getting Started
  *Disclosure: line references may change, but as of 8/12/2022 updates have been made according to changes made to script*
+ 
 #### <a name="chromeDriver"></a> Part 1: Set up ChromeDriver
 - Download and open the ChromeDriver zip file. Copy the file path onto line 105 in place of "*<INSERT CHROME DRIVER PATH>*"
 ```
